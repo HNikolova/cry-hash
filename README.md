@@ -1,0 +1,4 @@
+cry-hash
+========
+
+Awesome solutions
