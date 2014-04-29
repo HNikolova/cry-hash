@@ -1,0 +1,99 @@
+\input{Preamble}
+
+\begin{document}
+
+\input{Title}
+
+\setcounter{section}{1}
+\section{Similarity Measures}
+
+\textbf{(d)}
+
+Possibility 1: 
+$$
+d = \frac{1}{\rho(x_1,x_2)} - 1
+$$
+
+Possibility 2: 
+$$
+d = \frac{1-\rho}{\rho}
+$$
+
+\textbf{(e)} The euclidean distance $ d $:
+
+$$
+d(x_1, x_2) = \sqrt{\sum_{i=0}^{n}(x_{1i} - x_{2i})^2}
+$$
+
+The cosine similarity $ \rho $ for unit vectors:
+
+$$
+\rho(x_1, x_2) = \sum_{i=0}^{n}(x_{1i} * x_{2i})
+$$
+
+The length of $ x_1 $ and $ x_2 $ equals $ 1 $:
+
+$$
+\sqrt{\sum_{i=0}^{n}x_{1i}^2} = \sqrt{\sum_{i=1}^{n}x_{2i}^2} = \sum_{i=1}^{n}x_{1i}^2 = \sum_{i=1}^{n}x_{2i}^2 = 1
+$$
+
+Some equation reformation:
+
+$$
+\begin{aligned}
+d(x_1, x_2)^2 &= \sum_{i=0}^{n}x_{1i}^2 - 2 * \sum_{i=0}^{n}x_{1i}x_{2i} + \sum_{i=0}^{n}x_{2i}^2 \\
+ &= 1 - 2\rho(x_1, x_2) + 1\\
+ &= 2 * (1-\rho(x_1, x_2))\\
+\end{aligned}
+$$
+
+\pagebreak
+\textbf{(f)} We assume that the genetic makeup is stored as follows:
+
+$$
+\begin{array}{ccc}
+     &   x_1 & x_2\\
+    g_1 & 1 &  0\\
+    g_2 & 0 &  1\\
+    g_3 & 0 &  0\\
+    . & &\\
+    . & &\\
+    . & &\\
+    g_n & 1 &  1 \\
+\end{array}
+$$
+    
+Where the $g_i$ are all possible genes of the species and 1 and 0 indicate if 
+the $g_i$ is present in the vectors $x_1$ and $x_2$. 
+Given that, we would choose the Jaccard or Simple Matching Coefficient because 
+they show the percentual similarity of the vectors. 
+The Hamming distance would be rendered useless, because it only shows the 
+difference in the total amount of genes between the two individuals.  
+
+\setcounter{section}{5}
+\section{\emph{k}-Means}
+
+\textbf{(a)} Each time an object is selected it's class should not have been selected before:
+
+$$
+p(x) = \frac{k}k * \frac{k-1}k * ... * \frac 1 k = \prod_{i=0}^{k-1} \frac{k-i}k = \frac{k!}{k^k}
+$$
+
+\textbf{(b)}
+\begin{figure}[H]
+\includegraphics[scale=0.75]{pictures/means.png}
+\end{figure}
+
+\section{Cluster Analysis Principles}
+
+Which of the following statements are true?
+
+$\Box$ \emph{k}-means is a supervised algorithm since the centroids are specified.
+
+$\Box$ The runtime of \emph{k}-medoid is higher than that of k-means due to the medoid computation.
+
+$\boxtimes$ Density-based cluster analysis is more efficient than single link.
+
+$\Box$ DBSCAN is particularly efficient in high dimensions.
+
+\end{document}
