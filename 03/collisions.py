@@ -189,6 +189,12 @@ if __name__ == '__main__':
 # Same hash: d8f6058cf70365
 # Time taken: 1030.08439517
 
+# -------- k = 8 ----------
+# Message A: 8f167e92c22154dd
+# Message B: 2713a9e73bc80ffb
+# Same hash: aa601227397e64d8
+# Time taken: 15397.762315
+
 # brent
 # -------- k = 7 ----------
 # Message A: e25b4f6562ce9a
