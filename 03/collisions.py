@@ -189,19 +189,39 @@ if __name__ == '__main__':
 # Same hash: d8f6058cf70365
 # Time taken: 1030.08439517
 
+# Message A: da6fb3f7e7cdc6
+# Message B: f1a5f7b2a378bc
+# Same hash: 9ba67e27e8da29
+# Time taken: 1406.9522059
+
+# Message A: f4cb9c11504113
+# Message B: a2c9b4d04c00c4
+# Same hash: a438d0114bfe82
+# Time taken: 1604.78275704
+
 # brent
 # -------- k = 7 ----------
+# Message A: 9ed22ca449dc2a
+# Message B: c895d52df1c3f3
+# Same hash: 8e682596c5c09e
+# Time taken: 603.337014914
+
 # Message A: e25b4f6562ce9a
 # Message B: e1e261f583cd76
 # Same hash: b2134f793f8971
 # Time taken: 809.815823078
 
+# Message A: 55f748b8e558d3
+# Message B: 4c0653dbdfe631
+# Same hash: 5f4024facbcc1f
+# Time taken: 1156.3751359
+
 # birthday with pattern "00"
-# -------- k = 5 ----------
-# Message A: 6670526f58
-# Message B: 4249487a46
-# Same hash: fa02da1000
-# Time taken: 165.221256018
+# -------- k = 6 ----------
+# Message A: 64684f696641
+# Message B: 66465a6a485a
+# Same hash: c8493bd35200
+# Time taken: 2900.50962591
 
 
 
