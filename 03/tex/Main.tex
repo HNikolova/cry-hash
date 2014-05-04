@@ -4,96 +4,71 @@
 
 \input{Title}
 
-\setcounter{section}{1}
-\section{Similarity Measures}
+\section{Indifferentiability}
 
-\textbf{(d)}
+\textbf{Idea --} Exploit the knowledge about the public invertable permutation $ h $ to design/strengthen the oracle's simulator.
 
-Possibility 1: 
-$$
-d = \frac{1}{\rho(x_1,x_2)} - 1
-$$
-
-Possibility 2: 
-$$
-d = \frac{1-\rho}{\rho}
-$$
-
-\textbf{(e)} The euclidean distance $ d $:
+\textbf{Solution --} Design $ F $ as follows:
 
 $$
-d(x_1, x_2) = \sqrt{\sum_{i=0}^{n}(x_{1i} - x_{2i})^2}
+F(z) = H(h^{-1}(z))
 $$
 
-The cosine similarity $ \rho $ for unit vectors:
+When this construction is tested for indifferentiability in the ROM:
 
+\begin{enumerate}
+\item Ask for $ H(x) = y $.
+\item Compute $ h(x) = z $.
+\item Ask for $ F(z) $. Since $ F $ uses the inverse of $ h $ and passes the result to $ H $, $ F(z) $ will return $ y $ which renders the function indifferentiable by the terms of ROM.
+\end{enumerate}
+
+\hfill$\Box$
+
+\section{Structural Weakness}
+
+\textbf{Idea --} As $ H $ is an iterated COWHF, indermediate values based on chunks of its input are computed and used as initial values for subsequent calls of an internally used hash/compression function. This knowledge can be exploited since the data $ M $ can be considered constant.
+
+\textbf{Solution --} Let the server behave as follows:
+
+\begin{enumerate}
+\item The server gets the data $ M $, computes the value $ h_{M} = H(M) $ and stores $ h_{M} $. Since $ H $ is iterated, $ H(M) $ is constant input for later iterations.
+\item The server may now manipulate the data $ M $.
+\item The client computes $ h_{i} = H(M\ ||\ C_{i}) $ with the secret challenge $ C_{i} $ and sends $ C_{i} $ to the server to check for integrity.
+\item The server computes $ h'_{i} = H(C_{i}) $ while using the stored $ h_{M} $ as initial value for the first iteration in $ H $. As a consequence, $ h'_{i} $ equals $ h_{i} $.
+\end{enumerate}
+
+Since the input for the iterated $ H $ is $ M\ ||\ C_{i} $, the concatenation of $ C_{i} $ has now influence on internal iterations on all chunks of $ M $. This allows the server to pre-compute $ H(M) $ and manipulate the data afterwards.
+
+\newpage
+\section{Greedy Adversary}
+
+\textbf{Idea --} Use the principle of multi-collisions as in the Joux-attack. If we can efficiently find 20 collisions for an iterated structure, we can search for one preimage for this structure and get $ 2^{20} $ preimages through permutation.
+
+\textbf{Solution --} Set up an iterated structure as follows:
+
+\begin{enumerate}
+\item Use 20 iterations of $ H $.
+\item For each iteration find one collision $ x'_{i} $ for $ x_{i} $ with $ n = |x_{i}| = 128 $. As shown by the Joux-attack, the following equation holds:
 $$
-\rho(x_1, x_2) = \sum_{i=0}^{n}(x_{1i} * x_{2i})
+Pr[1\ coll] = 2^{\frac{n}{2}}
+$$ thus
 $$
-
-The length of $ x_1 $ and $ x_2 $ equals $ 1 $:
-
+Pr[20\ coll] = 2^{\frac{n}{2}} \cdot 20
 $$
-\sqrt{\sum_{i=0}^{n}x_{1i}^2} = \sqrt{\sum_{i=1}^{n}x_{2i}^2} = \sum_{i=1}^{n}x_{1i}^2 = \sum_{i=1}^{n}x_{2i}^2 = 1
+Since $ n = 128 $ :
 $$
-
-Some equation reformation:
-
+Pr[20\ coll] = 2^{64} \cdot 20
 $$
-\begin{aligned}
-d(x_1, x_2)^2 &= \sum_{i=0}^{n}x_{1i}^2 - 2 * \sum_{i=0}^{n}x_{1i}x_{2i} + \sum_{i=0}^{n}x_{2i}^2 \\
- &= 1 - 2\rho(x_1, x_2) + 1\\
- &= 2 * (1-\rho(x_1, x_2))\\
-\end{aligned}
+Because $ 20 < 2^{5} $, we can substitute $ 20 $ and get
 $$
-
-\pagebreak
-\textbf{(f)} We assume that the genetic makeup is stored as follows:
-
+Pr[32\ coll] = 2^{69}
 $$
-\begin{array}{ccc}
-     &   x_1 & x_2\\
-    g_1 & 1 &  0\\
-    g_2 & 0 &  1\\
-    g_3 & 0 &  0\\
-    . & &\\
-    . & &\\
-    . & &\\
-    g_n & 1 &  1 \\
-\end{array}
-$$
-    
-Where the $g_i$ are all possible genes of the species and 1 and 0 indicate if 
-the $g_i$ is present in the vectors $x_1$ and $x_2$. 
-Given that, we would choose the Jaccard or Simple Matching Coefficient because 
-they show the percentual similarity of the vectors. 
-The Hamming distance would be rendered useless, because it only shows the 
-difference in the total amount of genes between the two individuals.  
+thus finding 32 collisions has an efficiency of $ O(2^{69}) $
+\item Find one preimage $ x' $ for $ x $ with $ H(x) = H(x') $ . Since the output $ Y $ is truncated, we can find a preimage for $ x $ with $ O(2^{56}) $.
+\item We can use the found preimage $ x' $ as input for our structure. By permutation of each $ x_{i} $ and $ x'_{i} $, we will find $ 2^{20} $ preimages for $ x $.
 
-\setcounter{section}{5}
-\section{\emph{k}-Means}
+\end{enumerate}
 
-\textbf{(a)} Each time an object is selected it's class should not have been selected before:
-
-$$
-p(x) = \frac{k}k * \frac{k-1}k * ... * \frac 1 k = \prod_{i=0}^{k-1} \frac{k-i}k = \frac{k!}{k^k}
-$$
-
-\textbf{(b)}
-\begin{figure}[H]
-\includegraphics[scale=0.75]{pictures/means.png}
-\end{figure}
-
-\section{Cluster Analysis Principles}
-
-Which of the following statements are true?
-
-$\Box$ \emph{k}-means is a supervised algorithm since the centroids are specified.
-
-$\Box$ The runtime of \emph{k}-medoid is higher than that of k-means due to the medoid computation.
-
-$\boxtimes$ Density-based cluster analysis is more efficient than single link.
-
-$\Box$ DBSCAN is particularly efficient in high dimensions.
+The overall consumption is determined by the structural setup $ O(2^{69}) $ and finding a preimage $ O( 2^{56} ) $. This yields $ O(2^{69} + 2^{56}) \sim O(2^{69} ) $.
 
 \end{document}
