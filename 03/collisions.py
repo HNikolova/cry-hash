@@ -178,26 +178,21 @@ if __name__ == '__main__':
 
 # c)
 # floyd
-# -------- k = 7 ----------
-# Message A: 6c050c56e184bb
-# Message B: ca1ea40fea3b8a
-# Same hash: 1ec6981df02d7f
-# Time taken: 100.029162884
+# -------- k = 8 ----------
+# Message A: cd2c68d43b50968a
+# Message B: e80449ba1b1c7f4a
+# Same hash: 45491f36ca056b40
+# Time taken: 34412.193804
 
-# Message A: 70bbd0a4b357ee
-# Message B: ec952611bc5b42
-# Same hash: d8f6058cf70365
-# Time taken: 1030.08439517
+# Message A: ff9649cb549be024
+# Message B: 6d52e680318ce06a
+# Same hash: d2eb5d170f3dbead
+# Time taken: 27141.8880491
 
-# Message A: da6fb3f7e7cdc6
-# Message B: f1a5f7b2a378bc
-# Same hash: 9ba67e27e8da29
-# Time taken: 1406.9522059
-
-# Message A: f4cb9c11504113
-# Message B: a2c9b4d04c00c4
-# Same hash: a438d0114bfe82
-# Time taken: 1604.78275704
+# Message A: c70cf4c6a85595e0
+# Message B: 8be877564e2a3323
+# Same hash: 7a8245bce35a679c
+# Time taken: 3488.26078105
 
 # brent
 # -------- k = 7 ----------
@@ -217,11 +212,11 @@ if __name__ == '__main__':
 # Time taken: 1156.3751359
 
 # birthday with pattern "00"
-# -------- k = 6 ----------
-# Message A: 64684f696641
-# Message B: 66465a6a485a
-# Same hash: c8493bd35200
-# Time taken: 2900.50962591
+# -------- k = 7 ----------
+# Message A: 56537878756442
+# Message B: 59794644464945
+# Same hash: 2dc3b3d95d6900
+# Time taken: 123741.494141
 
 
 
