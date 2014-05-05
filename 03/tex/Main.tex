@@ -47,28 +47,28 @@ Since the input for the iterated $ H $ is $ M\ ||\ C_{i} $, the concatenation of
 \textbf{Solution --} Set up an iterated structure as follows:
 
 \begin{enumerate}
-\item Use 20 iterations of $ H $.
-\item For each iteration find one collision $ x'_{i} $ for $ x_{i} $ with $ n = |x_{i}| = 128 $. As shown by the Joux-attack, the following equation holds:
+\item Use $ k = 20 $ iterations of $ H $.
+\item For each iteration find one collision $ x'_{i} $ for $ x_{i} $ with $ n = |x_{i}| = 128 $ and $ i \in \{0...k\} $. As shown by the Joux-attack, the following equations hold:
 $$
-Pr[1\ coll] = 2^{\frac{n}{2}}
+O(1\ coll) = 2^{\frac{n}{2}}
 $$ thus
 $$
-Pr[20\ coll] = 2^{\frac{n}{2}} \cdot 20
+O(20\ coll) = 2^{\frac{n}{2}} \cdot 20
 $$
 Since $ n = 128 $ :
 $$
-Pr[20\ coll] = 2^{64} \cdot 20
+O(20\ coll) = 2^{64} \cdot 20
 $$
 Because $ 20 < 2^{5} $, we can substitute $ 20 $ and get
 $$
-Pr[32\ coll] = 2^{69}
+O(20\ coll) < 2^{69}
 $$
 thus finding 32 collisions has an efficiency of $ O(2^{69}) $
-\item Find one preimage $ x' $ for $ x $ with $ H(x) = H(x') $ . Since the output $ Y $ is truncated, we can find a preimage for $ x $ with $ O(2^{56}) $.
-\item We can use the found preimage $ x' $ as input for our structure. By permutation of each $ x_{i} $ and $ x'_{i} $, we will find $ 2^{20} $ preimages for $ x $.
+\item Find one $ x_{k+1} $ such that $ H(x_{0} || x_{1} || ... || x_{k+1} ) = Y $ . Since the output $ Y $ is truncated, we can find $ x_{k+1} $ with $ O(2^{56}) $.
+\item By permutation of each $ x_{i} $ and $ x'_{i} $, we will find $ 2^{20} $ preimages for $ Y $.
 
 \end{enumerate}
 
-The overall consumption is determined by the structural setup $ O(2^{69}) $ and finding a preimage $ O( 2^{56} ) $. This yields $ O(2^{69} + 2^{56}) \sim O(2^{69} ) $.
+The overall consumption is determined by the structural setup ($ O(2^{69}) $) and finding a preimage ($ O( 2^{56} ) $). This yields $ O(2^{69} + 2^{56}) \sim O(2^{69} ) $.
 
 \end{document}
