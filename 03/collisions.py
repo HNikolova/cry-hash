@@ -175,6 +175,14 @@ if __name__ == '__main__':
 # birthday: 23.8 s
 # floyd:     4.9 s
 # brent:     3.8 s
+#
+# These numbers indicate that Brent's algorithm is somewhat faster than
+# Floyd's. This might be due to the reduced amount of hash value computations
+# for each comparions (Floyd: 3, Brent: 1). BUT while searching for the
+# largest k possible, Floyd's algorithm reached a higher value (which
+# might as well just be just by chance).
+#
+
 
 # c)
 # floyd
