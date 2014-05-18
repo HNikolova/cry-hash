@@ -1,2 +1,7 @@
 .stuff
 *.pdf
+*.aux
+*.log
+*.fdb_latexmk
+*.synctex.gz
+*.out

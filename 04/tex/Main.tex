@@ -1,0 +1,132 @@
+
+
+\input{Preamble}
+
+\begin{document}
+
+\input{Title}
+
+\begin{landscape}
+
+\section{Block Cipher Based Compression Function}
+
+\renewcommand{\arraystretch}{2}
+\begin{table}[H]
+    \begin{center}
+        \begin{tabularx}{24cm}[]{lAAAAAA}
+            \hline
+            \rowcolor{Gray} \textbf{Attack} & \textbf{a)} & \textbf{b)} & \textbf{c)} & \textbf{d)} & \textbf{e)} & \textbf{f)}  \\
+            \hline
+                \textbf{Trivial}
+                    & \textbf{No.} $H_i$ depends on $M_i$
+                    & \textbf{No.} $H_i$ depends on $M_i$ and $H_{i-1}$
+                    & \textbf{No.} $H_i$ depends on $M_i$ and $H_{i-1}$
+                    & \textbf{Yes.} If $H_{i-1} \oplus M_i$ is known
+                    & \textbf{No.} $H_i$ depends on $M_i$ and $H_{i-1}$
+                    & \textbf{No.} $H_i$ depends on $M_i$ and $H_{i-1}$
+                    \\
+                \rowcolor{Gray} \textbf{Direct}
+                    & \textbf{Yes.} Since $C_1$ and $C_2$ are known and $E$ is invertible
+                    & \textbf{No.}  $M_i$ is contained in both: Key- and plain-text
+                    & \textbf{No.}  Because $M_i$ is part of the key
+                    & \textbf{No.}  $M_i$ is contained in both: Cipher- and plain-text
+                    & \textbf{Yes.} Key and cipher-text are known and $E$ is invertible
+                    & \textbf{No.}  $M_i$ is contained in both: Key- and plain-text
+                    \\
+                \textbf{Permutation}
+                    & \textbf{No.}  $H_i$ does not depend on $H_{i-1}$
+                    & \textbf{No.}  $H_{i-1}$ is used as input for $E$
+                    & \textbf{No.}  $H_{i-1}$ is used as input for $E$
+                    & \textbf{No.}  $H_{i-1}$ is used as input for $E$
+                    & \textbf{No.}  $H_{i-1}$ is used as input for $E$
+                    & \textbf{Yes.} $H_{i-1}$ is only xor'ed to the end
+                    \\
+                \rowcolor{Gray} \textbf{Forward}
+                    & \textbf{No.} Knowledge on $H_{i-1}$ or $H_{i-1}^*$ does not help here
+                    & \textbf{No.} Because $M_i$ is in the key
+                    & \textbf{No.} Because only $H_{i-1}$ is used as input for $E$
+                    & \textbf{Yes.} For $M_i^* = M_i \oplus H_{i-1} \oplus H_{i-1}^* $
+                    & \textbf{No.} Since the block cipher's key differs for $H_{i}$ a call to the oracle is needed
+                    & \textbf{No.} Because $M_i$ is in the key
+                    \\
+                \textbf{Backward}
+                    & \textbf{Yes.} $M_i$ can be computed directly. Every assumed $H_{i-1}$ will be correct
+                    & \textbf{No.}  Because $H_{i-1}$ is xor'ed with the cipher-text
+                    & \textbf{Yes.} Assume an Key $k = M_i \oplus H_{i-1}$ and calculate $H_{i-1}$ by inverting $E$. Get $M_i$ by solving the former equation
+                    & \textbf{No.}  $M_i$ is contained in both: Cipher- and plain-text
+                    & \textbf{Yes.} With a MITM-attack in $O(2^{n/2})$: Find a collision on $H_{i-1}$
+                    & \textbf{Yes.} With $H_{i-1} = E_{M_i}(M_i) \oplus H_i$ it's possible to calculate a $H_{i-1}$ for each desired $M_i$
+                    \\
+                \rowcolor{Gray} \textbf{Fixpoint}
+                    & \textbf{No.}  Because $H_i$ and $H_{i-1}$ are not part of the compression function
+                    & \textbf{No.}  One has to solve $E_{M_{i-1}}(H_i) \oplus M_i = 0$ which is only possible in $O(2^n)$
+                    & \textbf{No.}  Because $M_i$ is part of the key
+                    & \textbf{No.}  $M_i$ is contained in both: Cipher- and plain-text
+                    & \textbf{Yes.} Assume an arbitrary value for $H_{i-1}$. Calculate $M_i$ by solving $0 = E_{H_{i-1}}(M_i \oplus H_{i-1})$
+                    & \textbf{No.}  It's not efficient to find a $M_i$ such that $E_{M_i}(M_i) = 0$
+                    \\
+            \hline
+        \end{tabularx}
+    \end{center}
+\end{table}
+
+\end{landscape}
+
+\section{Weak Block Cipher}
+
+The following table shows the different security issues of the provided compression function (1) and hash function (2) with the given differential properties (a) and (b).
+
+\renewcommand{\arraystretch}{2}
+\begin{table}[H]
+    \begin{center}
+        \begin{tabularx}{\textwidth}[]{l C{1} C{1} C{1} C{1}}
+            \hline
+            \rowcolor{Gray} \textbf{Attack} & \textbf{(a) (1)} & \textbf{(a) (2)} & \textbf{(b) (1)} & \textbf{(b) (2)} \\
+            \hline
+                \textbf{Collision}
+                    & \multicolumn{2}{C{2}}{The messages $M_i$ and $M_i^*$ with $M_i^* = M_i \oplus \Delta_2$ will collide. Therefore collisions can be found in $O(1)$}
+                    & $O(1)$: For $H_{i-1}^* = H_{i-1} \oplus \Delta_1$ holds the equality $F(H_{i-1}, M_i) = F(H_{i-1}^*, M_i)$
+                    & The differential property does not harm, thus $O(2^{n/2})$
+                    \\
+                \textbf{Preimage}
+                    & \multicolumn{2}{C{2}}{As it's possible to generate a collision for each given $M_i$, only half of the possibilities have to be checked, yielding a complexity of $O(2^{n-1})$}
+                    & Since half of the $H_{i-1}$ may lead to the same $H_i$, only half of the possibilities have to be checked, thus $O(2^{n-1})$
+                    & The differential property does not harm, thus $O(2^n)$
+                    \\
+                 \textbf{2nd-Preimage}
+                    & \multicolumn{2}{C{2}}{The messages $M_i$ and $M_i^*$ with $M_i^* = M_i \oplus \Delta_2$ will collide. Therefore a 2nd-preimage can be found in $O(1)$}
+                    & Same as Preimages.
+                    & The differential property does not harm, thus $O(2^n)$
+                    \\
+            \hline
+        \end{tabularx}
+    \end{center}
+\end{table}
+
+\newpage
+
+\section{Double-Block-Length Hash Function}
+\subsection{The Picture}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=5cm]{drawing.pdf}
+\end{figure}
+
+\subsection{The Security of the compression Function}
+
+\begin{description}
+    \item \textbf{Collision-security:}
+    \item \textbf{Preimage-security:}
+    \item \textbf{2nd-Preimage-security:}
+\end{description}
+
+\subsection{The Security of the Hash Function}
+
+\begin{description}
+    \item \textbf{Collision-security:} Since $H_0$ is fixed and $E$ is invertible it is impossible that different $M_1$ collide.
+    \item \textbf{Preimage-security:} As there are no collisions with this structure, no preimages exist at all.
+    \item \textbf{2nd-Preimage-security:} Due to the invertibility of $E$, it's easy to calculate $M_1 = E_{H_0}^{-1}(H_1)$
+\end{description}
+
+\end{document}
