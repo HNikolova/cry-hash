@@ -1,0 +1,90 @@
+\input{Preamble}
+
+\renewcommand\thesubsection{\alph{subsection})}
+
+\begin{document}
+
+\input{Title}
+
+\section{MD4 \textendash\ Differential Cryptanalysis I}
+
+\subsection{}
+We will describe the exact differential path in section \textbf{b}. Since in the general case the most significant bit (MSB) is not flipped (as it is the case for task b), the 4th step may introduce a carry bit through calling \textit{Fun} as wall as through adding $x_1'$. Hence the overall probability of the differential path is $\frac{1}{64}$.
+
+\subsection{}
+We consider $X_0 \oplus X_0' = 2^{28}$ and $X_1 \oplus X_1' = 2^{31}$. The corresponding differential path looks as follows:
+\begin{itemize}
+
+\item Steps 3 to 16 do not introduce any difference.
+\item Step 17:
+\begin {itemize}
+  \item Since the 3rd bit of $X_{0}'$ is flipped, the probability of no other bit being flipped through \textit{Fun} is $\frac{1}{2}$.
+  \item Through the final rotation at the and of the step the flipped bit will become MSB
+\end{itemize}
+\item Steps 18 to 20: Each step introduces a probability of $\frac{1}{2}$ for no new difference being generated.
+\item Step 21: Since the first bit of $X_1'$ is flipped, the previously introduced difference is annihilated and the differential path is finished. Its overall probability is $\frac{1}{16}$.
+\item Steps 22 to 32: No new difference is introduced.
+\end{itemize}
+
+\subsection{}
+The probability for this characteristic will decrease because the additive difference may introduce more than one flipped bit, which then have to be eliminated.
+
+\section{MD4 \textendash\ Differential Cryptanalysis II}
+We set $X_i = X_i'$ for $i \notin \{2,3\}$; steps 5-36 and $i \in \{0,15\}$ and choose the differential characteristic to be $X_2 \oplus X_2' = 2^{28}$ and $X_3 \oplus X_3' = 2^{31}$. The differential path is built in analogy to task \textbf{1b)} whereas the first difference occures in step 25. The introduced flipped bit is annihilated in step 29 and the overall probability of this path is $\frac{1}{16}$.
+
+\newpage
+
+\section{MD4-NSA}
+We set $X_i = X_i'$ for $i \notin \{1,2\}$; steps 4-48 and $i \in \{0,15\}$ and choose the differential characteristic to be $X_1 \oplus X_1' = 2^{15}$ and $X_2 \oplus X_2' = 2^{31}$. The corresponding differential path looks as follows:
+
+\begin{itemize}
+\item Steps 4 to 20 do not introduce any difference.
+\item Step 21: $X_1'$ occures the first time. Since the 16th bit is flipped, a carry bit may be introduced. With probability $\frac{1}{2}$ this does not happen. Through rotation by 16 bits the flipped bit becomes MSB.
+\item Steps 22 to 24: Each step introduces a probability of $\frac{1}{2}$ for no new difference being generated through \textit{Fun}.
+\item Step 25: $X_2'$ occures the first time. With probability of $\frac{1}{2}$ the difference introduced by the previous steps is annihilated. Accumulating the probabilities of the previous steps there is a probability of $\frac{1}{16}$ for no difference after the 25th step.
+\item Steps 26 to 36: No new difference is introduced.
+\item Step 37: $X_2'$ occures the second time. Since the MSB is flipped, no carry bit can be produced. The flipped bit is rotated to position 16.
+\item Steps 38 to 40: Each step introduces a probability of $\frac{1}{2}$ for no new difference being generated through \textit{Fun}.
+\item Step 41: $X_1'$ occures the second time. Because the 16th bit is flipped, the difference introduced by the previous steps may be annihilated. Since there is a chance of $\frac{1}{2}$ that no carry bit is introduced and a chance of $\frac{1}{2}$ for \textit{Fun} to not alter the 16th bit, the probability of no new difference being introduced is $\frac{1}{4}$.
+\item Steps 42 to 48: No new difference is introduced.
+
+\end{itemize}
+
+The overall probability of this differential path is $\frac{1}{512}$. This path can be considered very long since it covers most of the steps (44 out of 48) of MD4-NSA. Since the constant rotational factor is exactly half of the message block length (32 bits), this knowledge can be exploited by flipping the 16th bit. As a result MD4-NSA is more vulnerable to differential cryptanalysis.
+
+\section{Merkle Hash Tree}
+We define $H$ to be the Merkle Hash Tree construction using the compression function $F$.
+
+\textbf{To show:}
+
+\begin{equation}
+F\ \text{collision resitant} \Rightarrow H\ \text{collision resistant}
+\end{equation}
+
+We choose the indirect proof technique. Thus we are going to show
+
+\begin{equation}
+H\ \text{not collision resitant} \Rightarrow F\ \text{not collision resistant}
+\end{equation}
+
+\newpage
+
+\textbf{Proof:}
+
+\begin{itemize}
+\item Let $M$ and $M'$ be a pair of messages with $M \neq M'$ and $H(M) = H(M')$, i.e. $M$ and $M'$ produce colliding hash values.
+\item To prove (2) we need to find a part of the construction where a call to $F$ must collide.
+\item We consider to cases: $|M| = |M'|$ and $|M| \neq |M'|$
+\item Case 1 ($|M| \neq |M'|$): Since the last calls to $F$ respectively take $|M|$ and $|M'|$ as input and these lengths are different, there must be a collision in $F$, i.e. $F$ is not collision resistant.
+\item Case 2 ($|M| = |M'|$):
+
+\begin{itemize}
+\item If the results of the last but one call to $F$ for $M$ and $M'$ are different, there must be a collision in the last call to $F$.
+\item Else the last but one call to $F$ collided or got the same input for both $M$ and $M'$. If that is the case, repeat the previous argument until a collision for $F$ is found or the construction's leaves are reached.
+\item If the leaves are reached, a collision is found for all pairs of $m_i$, $m_i'$ where $m_i \neq m_i'$
+\end{itemize}
+
+\end{itemize}
+\hfill$\Box$
+
+\end{document}
