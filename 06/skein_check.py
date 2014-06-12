@@ -34,7 +34,7 @@ def skein_round(block0, block1, block2, block3, rotation_value):
   block3 = rotate_left64(block3, rotation_value) ^ block2
 
   # PERMUTE
-  return (block2, block1, block0, block3)
+  return (block0, block3, block2, block1)
 
 # ------------------------------------------------------------------------------
 if __name__ == '__main__':
