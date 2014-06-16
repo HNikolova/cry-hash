@@ -116,17 +116,17 @@ The following table shows the different security issues of the provided compress
 \subsection{The Security of the compression Function}
 
 \begin{description}
-    \item \textbf{Collision-security:}
-    \item \textbf{Preimage-security:}
-    \item \textbf{2nd-Preimage-security:}
+    \item \textbf{Collision-security:} Collisions can be found with a birthday attack, yielding $O(2^{2n/2}) = O(2^n)$.
+    \item \textbf{Preimage-security:} Preimages can also be found in $O(2^n)$: Retrieve a $H_{i-1}$ and a $G_{i-1}$. Calculate $M_i = E_{H_{i-1}}^{-1}(H_i)$. Then calculate a $G_i^* = E_{G_{i-1}}(M_i)$. If $G_i^*$ equals $G_i$ a preimage has been found. Else choose another triple Since $G_i$ has n bits, the propability is $1/2^n$.
+    \item \textbf{2nd-Preimage-security:} $O(2^n)$ as well. First request the result of the desired image, then apply the preimage-approach.
 \end{description}
 
 \subsection{The Security of the Hash Function}
 
 \begin{description}
     \item \textbf{Collision-security:} Since $H_0$ is fixed and $E$ is invertible it is impossible that different $M_1$ collide.
-    \item \textbf{Preimage-security:} As there are no collisions with this structure, no preimages exist at all.
-    \item \textbf{2nd-Preimage-security:} Due to the invertibility of $E$, it's easy to calculate $M_1 = E_{H_0}^{-1}(H_1)$
+    \item \textbf{Preimage-security:}  Due to the invertibility of $E$, it's easy to calculate $M_1 = E_{H_0}^{-1}(H_1)$
+    \item \textbf{2nd-Preimage-security:} As there are no collisions with this structure, no 2nd-preimages exist.
 \end{description}
 
 \end{document}
