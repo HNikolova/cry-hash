@@ -1,0 +1,143 @@
+\input{Preamble}
+
+\renewcommand\thesubsection{\alph{subsection})}
+
+\begin{document}
+
+\input{Title}
+
+\section{Differential Cryptanalysis of Variants of CubeHash}
+
+\subsection{CubeHash*}
+
+We introduce a MSB-difference in the $1^{st}$ word of the internal state ($w_1$).
+
+\begin{itemize}
+    \item First $\boxplus$ will propagate the difference with propability $Pr = 1$.
+    \item First $swap$ won't do anything.
+    \item First $\oplus$ will propagate the difference to the word $w_{16}$ with propability $Pr = 1$.
+    \item Second $swap$ will move the difference to the MSB of $w_3$ with propability $Pr = 1$.
+    \item Second $\boxplus$ will propagate the differences $w_1$ and $w_3$ with propability $Pr = 1$.
+    \item Third $swap$ will move the difference to the MSB of $w_21$ with propability $Pr = 1$.
+    \item Second $\oplus$ will propagate the difference to the words $w_{17}$, $w_{19}$ and $w_{21}$ with propability $Pr = 1$.
+    \item Fourth $swap$ will move the difference to the MSB of $w_4$ with propability $Pr = 1$.
+\end{itemize}
+
+Finally, with propability $Pr = 1$, the MSB of $w_4$, $w_{17}$, $w_{19}$ and $w_{21}$ will be flipped. If not flipping the MSB, each $\boxplus$ will introduce a $Pr = 0.5$ for each flipped bit in their input. This would lead to a final propability of $Pr = 0.125$. Obviously, the security is significantly decreased regarding to differential cryptanalysis. Regarding to symmetric states: They are still possible.
+
+\subsection{CubeHash**}
+
+We introduce a MSB-difference in the $i^{th}$ word of the first 16 state words of the internal state ($w_i$).
+
+\begin{itemize}
+    \item First $\boxplus$ will propagate the difference with propability $Pr = 1$.
+    \item First $\lll$ won't do anything.
+    \item First $\oplus$ will propagate the difference to the word $w_{i+16}$ with propability $Pr = 1$.
+    \item Second $\boxplus$ will eliminate difference in $w_i$ with propability $Pr = 1$.
+    \item Second $\lll$ moves difference to $11^{th}$ position with propability $Pr = 1$.
+    \item Second $\oplus$ won't do anything.
+\end{itemize}
+
+Finally, with propability $Pr = 1$, the $11^{th}$ bit of $w_{i+16}$ will be flipped. If not flipping the MSB, each $\boxplus$ will introduce a $Pr = 0.5$ for each flipped bit in their input. This would lead to a final propability of $Pr = 0.25$. Obviously, the security is significantly decreased regarding to differential cryptanalysis. Regarding to symmetric states: They are still possible.
+
+
+\section{Differential Cryptanalysis of BLAKE}
+
+\subsection{}
+
+\begin{itemize}
+    \item Introduce MSB-differences in the following input variables: $a$, $M_0$ and $M_3$.
+    \item After the first round, there is no difference left with propability $Pr = 1$.
+    \item The second and third round will introduce no new differences.
+    \item The last round introduces the following differences:
+    \begin{itemize}
+        \item $a'$: MSB with $Pr = 1$
+        \item $b'$: $15^{th}$ bit with $Pr = 1$
+        \item $c'$: $8^{th}$ bit with $Pr = 0.5$
+        \item $d'$: $8^{th}$ bit with $Pr = 1$
+    \end{itemize}
+    \item This leads to a total propability of 0.5
+\end{itemize}
+
+\subsection{}
+
+\begin{itemize}
+    \item Introduce MSB-differences in the following input variables: $M_2$ and $M_3$.
+    \item The first differences are introduced in the third round. They lead to differences in the four intermediate chaining values:
+    \begin{itemize}
+        \item $a'$: MSB with $Pr = 1$
+        \item $b'$: $28^{th}$ bit with $Pr = 1$
+        \item $c'$: $16^{th}$ bit with $Pr = 0.5$
+        \item $d'$: $16^{th}$ bit with $Pr = 1$
+    \end{itemize}
+    \item In the last round these differences are propagated through the structure, leading to the following flipped bits in the final chaining values:
+    \begin{itemize}
+        \item $a''$: $28^{th}$ bit with $Pr = 0.5$
+        \item $b''$: $3^{th}$ bit, $11^{th}$ bit and $28^{th}$ bit with $Pr = 0.5$
+        \item $c''$: $4^{th}$ bit, $16^{th}$ bit and $24^{th}$ bit with $Pr = 2^{-5}$
+        \item $d''$: $4^{th}$ bit and $24^{th}$ bit with $Pr = 0.5$
+    \end{itemize}
+    \item This leads to a total propability of $Pr = 2^{-8}$
+\end{itemize}
+
+\section{Differential Cryptanalysis of Skein*}
+
+\begin{itemize}
+    \item Introduce MSB-differences in the $2^{nd}$ and $4^{th}$ block.
+    \item After one round this leads to MSB-differences in the $1^{st}$ and $3^{rd}$ block.
+    \item After second round there are MSB-differences in the $2^{nd}$ and $4^{th}$ block again.
+    \item After 72 rounds there will be MSB-differences in the $2^{nd}$ and $4^{th}$ block with propability of $Pr = 1$.
+\end{itemize}
+
+\section{Programming Task (Python)}
+
+\begin{table}[H]
+    \begin{center}
+        \begin{tabularx}{\textwidth}[]{XXXX}
+            \hline
+            \rowcolor{Gray} \textbf{Pobability} & \textbf{Path length} & \textbf{Rotation Constant} & \textbf{Bit position of input difference} \\
+            \hline
+            1  &  72  &  0  &  63 \\
+            1  &  72  &  0  &  127 \\
+            1  &  72  &  0  &  191 \\
+            1  &  72  &  0  &  255 \\
+            2.11758236814e-22  &  72  &  32  &  63 \\
+            2.11758236814e-22  &  72  &  32  &  127 \\
+            2.11758236814e-22  &  72  &  32  &  191 \\
+            2.11758236814e-22  &  72  &  32  &  255 \\
+            4.48415508584e-44  &  72  &  0  &  0 \\
+            4.48415508584e-44  &  72  &  0  &  1 \\
+            4.48415508584e-44  &  72  &  0  &  2 \\
+            4.48415508584e-44  &  72  &  0  &  3 \\
+            4.48415508584e-44  &  72  &  0  &  4 \\
+            ... &&& \\
+            1.59309191113e-58  &  72  &  16  &  95 \\
+            1.59309191113e-58  &  72  &  48  &  95 \\
+            1.59309191113e-58  &  72  &  16  &  223 \\
+            1.59309191113e-58  &  72  &  48  &  223 \\
+            3.88938454866e-62  &  72  &  16  &  31 \\
+            3.88938454866e-62  &  72  &  48  &  31 \\
+            3.88938454866e-62  &  72  &  16  &  159 \\
+            3.88938454866e-62  &  72  &  48  &  159 \\
+            9.49556774576e-66  &  72  &  32  &  0 \\
+            9.49556774576e-66  &  72  &  32  &  1 \\
+            9.49556774576e-66  &  72  &  32  &  2 \\
+            9.49556774576e-66  &  72  &  32  &  3 \\
+            9.49556774576e-66  &  72  &  32  &  4 \\
+            ... &&& \\
+            2.31825384418e-69  &  72  &  16  &  63 \\
+            2.31825384418e-69  &  72  &  48  &  63 \\
+            2.31825384418e-69  &  72  &  16  &  191 \\
+            2.31825384418e-69  &  72  &  48  &  191 \\
+            5.65979942427e-73  &  72  &  16  &  127 \\
+            5.65979942427e-73  &  72  &  48  &  127 \\
+            5.65979942427e-73  &  72  &  16  &  255 \\
+            5.65979942427e-73  &  72  &  48  &  255 \\
+            ... &&& \\
+            \hline
+        \end{tabularx}
+    \end{center}
+\end{table}
+
+
+\end{document}

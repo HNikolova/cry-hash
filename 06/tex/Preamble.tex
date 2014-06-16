@@ -1,0 +1,78 @@
+\documentclass[10pt, headings=normal, a4paper, bibliography=totoc]{scrartcl}
+\widowpenalty = 10000
+\clubpenalty = 10000
+
+\parskip 12pt plus 1pt minus 1pt
+\parindent 0pt
+
+% Deutsch
+\usepackage[ngerman]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath}
+\usepackage{lscape}
+
+\renewcommand\thesubsection{\alph{subsection})}
+
+% Colors
+\usepackage{color}
+\definecolor{Gray}{gray}{0.9}
+
+% Tables
+\usepackage{colortbl}
+\usepackage{tabularx}
+\newcolumntype{A}{>{\centering\arraybackslash}X}
+\newcolumntype{C}[1]{>{\setlength{\hsize}{#1\hsize}\addtolength{\hsize}{#1\tabcolsep}\centering\arraybackslash}X}
+
+% Movies
+\usepackage{movie15}
+
+% \ding{}
+\usepackage{pifont}
+\usepackage{amssymb}
+
+% exakte Bildposition
+\usepackage{float}
+
+% for comments
+\usepackage{comment}
+
+% BibTex
+\usepackage{cite}
+
+% Bilder
+\usepackage{graphicx}
+\usepackage[hang]{subfigure}
+\setlength{\subfigcapmargin}{0.2cm}
+
+% Pretty refs
+\usepackage{prettyref}
+\newrefformat{sec}{\ref{#1}:\ \emph{\nameref{#1}}}
+\newrefformat{fig}{Abbildung \ref{#1}}
+\newrefformat{tab}{Tabelle \ref{#1}}
+
+% links
+\usepackage{hyperref}
+\usepackage{color}
+\definecolor{links}{rgb}{0.2, 0.2, 0.3}
+\hypersetup{
+    colorlinks,
+    citecolor=black,
+    filecolor=black,
+    linkcolor=black,
+    urlcolor=black
+}
+
+% Kopf- und Fußzeile
+\usepackage{scrpage2}
+\pagestyle{scrheadings}
+\ihead{\footnotesize{Felix Lauer (90404), Simon Schneegans (90405)}}
+\ohead{\pagemark}
+\chead{}
+\cfoot{}
+\setheadsepline{0.5pt}
+
+% Formatierung
+\usepackage{setspace}
+\usepackage[a4paper, left=3cm, right=2.5cm, bottom=3cm, top=3cm]{geometry}
