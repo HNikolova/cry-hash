@@ -3,14 +3,18 @@
 #                Solution by Felix Lauer & Simon Schneegans
 #
 # ------------------------------------------------------------------------------
+
+# rotate x by n bits to the right ----------------------------------------------
 def rotate_right64(x, n):
     mask = (2L**n) - 1
     mask_bits = x & mask
     return (x >> n) | (mask_bits << (64 - n))
 
+# rotate x by n bits to the left -----------------------------------------------
 def rotate_left64(x, n):
     return rotate_right64(x, 64 - n)
 
+# counts the amount of set bits in block. The MSB is not taken into account ----
 def count_ones_without_msb64(block):
   count = 0
   for i in range(0,63):
@@ -18,6 +22,7 @@ def count_ones_without_msb64(block):
       count += 1
   return count
 
+# ------------------------------------------------------------------------------
 def skein_round(block0, block1, block2, block3, rotation_value):
 
   # MIX
@@ -26,11 +31,8 @@ def skein_round(block0, block1, block2, block3, rotation_value):
   # differences. We accumulate the probability of no carry bits being
   # introduced by the addition of the message blocks.
   block0 = block0^block1
-
   block1 = rotate_left64(block1, rotation_value) ^ block0
-
   block2 = block2^block3
-
   block3 = rotate_left64(block3, rotation_value) ^ block2
 
   # PERMUTE
@@ -42,7 +44,7 @@ if __name__ == '__main__':
 
   for block_num in range(0, 4):
     for diff in range(0, 64):
-      for rot_const in range(1, 63):
+      for rot_const in range(0, 64):
         block0 = 1 << diff if block_num is 0 else 0
         block1 = 1 << diff if block_num is 1 else 0
         block2 = 1 << diff if block_num is 2 else 0
