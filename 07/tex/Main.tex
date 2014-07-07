@@ -1,0 +1,121 @@
+\input{Preamble}
+
+\renewcommand\thesubsection{\alph{subsection})}
+
+\begin{document}
+
+\input{Title}
+
+\section{Entropy}
+
+\subsection*{Preliminaries}
+
+The entropy of a source $Q$ can be measured in different ways. For this task. we consider the \textbf{Shannon} and the \textbf{Min} entropy, which are defined as follows:
+
+\begin{tabular}{ll}
+  \textbf{Shannon Entropy:} & $H_2(x)= -\displaystyle\sum_{i=0}^{n-1}P(x_i)\cdot log_2 P(x_i)$ \\
+  \textbf{Min Entropy:} & $H_{\infty}(x)= -log_2\ sup_{i=0...n-1}\ P(x_i)$
+\end{tabular}
+
+\subsection{Uniform distribution}
+
+Since the source $Q$ follows a uniform distribution, the probability of one element $x_i$ of $Q$ can be written as
+
+$$
+P(x_i) = \frac{1}{62}, i \in \{0...61\}
+$$
+
+Accordingly, the source's Shannon entropy can be computed by
+
+$$
+H_2(x) = -\displaystyle\sum_{i=0}^{61}\frac{1}{62}\cdot log_2 P(\frac{1}{62})
+\approx \text{\textbf{5.95}}
+$$
+
+and the Min Entropy can be calculated by
+$$
+H_{\infty}(x)= -log_2\ \frac{1}{62}
+\approx \text{\textbf{5.95}}
+$$
+
+\subsection{High lower case probability}
+
+Since the probability of a lower case letter in the source $Q$ is twice as high as the probability of an upper case letter, the probability of an element $x_i$'of $Q$ can be written as
+
+$$
+P(x_i) = \left\{
+  \begin{array}{ll}
+    \frac{1}{44} & : i \in \{0...25\}\\\\
+    \frac{1}{88} & : i \in \{26...61\}
+  \end{array}
+\right.
+$$
+
+Accordingly, the source's Shannon entropy can be computed by
+
+$$
+H_2(x) = -\displaystyle\sum_{i=0}^{25}\frac{1}{44}\cdot log_2 P(\frac{1}{44}) + \displaystyle\sum_{i=26}^{61}\frac{1}{88}\cdot log_2 P(\frac{1}{88})
+\approx \text{\textbf{5.87}}
+$$
+
+and the Min Entropy can be calculated by
+$$
+H_{\infty}(x)= -log_2\ \frac{1}{44}
+\approx \text{\textbf{5.46}}
+$$
+
+\subsection{High digit probability}
+
+Since the probability of a digit in the source $Q$ is given by $0.7$, the probability of an element $x_i$ of $Q$ can be written as
+
+$$
+P(x_i) = \left\{
+  \begin{array}{ll}
+    \frac{3}{520} & : i \in \{0...51\}\\\\
+    \frac{7}{100} & : i \in \{52...61\}
+  \end{array}
+\right.
+$$
+
+Accordingly, the source's Shannon entropy can be computed by
+
+$$
+H_2(x) = -\displaystyle\sum_{i=0}^{51}\frac{3}{520}\cdot log_2 P(\frac{3}{520}) + \displaystyle\sum_{i=26}^{61}\frac{7}{100}\cdot log_2 P(\frac{7}{100})
+\approx \text{\textbf{4.92}}
+$$
+
+and the Min Entropy can be calculated by
+$$
+H_{\infty}(x)= -log_2\ \frac{7}{100}
+\approx \text{\textbf{3.84}}
+$$
+
+\section{Variant of HMAC}
+\subsection{Forgery for HMAC* where the outer invocation of $H$ is invertible (i.e. $H'$)}
+
+In this case, the key $K$ can be easily computed by
+$$
+K= H'^{-1}(HMAC)_{[0...|const_2|]} \oplus const_2
+$$
+
+where $H'^{-1}(X)$ is the inverse of $H'$, $HMAC$ is one round value of $HMAC^*$, $|const_2|$ is the bit length of $const_2$ and $X_{[0...|const_2|]}$ determines the first $|const_2|$ bits of $X$.
+
+To get $U$, one has to guess with $O(2^{|U|})$.
+
+This is an efficient forgery, since a part of the input of $H'$ is computable and the other part can be guessed with low effort, since $U$ is typically short.
+
+\subsection{Forgery for HMAC* where the inner invocation of $H$ is invertible (i.e. $H'$)}
+
+For that case, no efficient forgery can be found since no part of the input is efficiently computable.
+
+\section{Weakness of ROMix}
+
+As a consequence of the implementation of $ROMix$, the order of access to the different $V_j$ depends on the password. Hence, a spy process can trace which $V_j$ are accessed at the beginning of $ROMix$. While executing a brute-force attack, the adversary can check whether the current password leads to the same accesses and otherwise discard it.
+
+
+\section{Programming Task (Python)}
+
+The solution of this task is contained within the attached file \texttt{compute\_entro.py} and the output of the contained python program.
+
+
+\end{document}
